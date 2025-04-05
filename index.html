@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            background: url('https://source.unsplash.com/1600x900/?gym,fitness') no-repeat center center/cover;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 50px;
+            max-width: 500px;
+        }
+        .hidden { display: none; }
+        .equipment-status { font-size: 1.2rem; font-weight: bold; }
+        .available { color: green; }
+        .in-use { color: orange; }
+    </style>
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+    <div class="container text-center">
+        <h1 class="mb-4">🏋️‍♂️ Gym Tracker</h1>
+        
+        <div id="roleSelection">
+            <h2>Select Your Role</h2>
+            <button class="btn btn-primary" onclick="showSection('adminLogin')">Admin Login</button>
+            <button class="btn btn-secondary" onclick="showSection('userLogin')">User Login</button>
+        </div>
+
+        <div id="adminLogin" class="hidden">
+            <h2>Admin Login</h2>
+            <input type="text" id="adminUsername" placeholder="Username" class="form-control mt-2">
+            <input type="password" id="adminPassword" placeholder="Password" class="form-control mt-2">
+            <button class="btn btn-success mt-3" onclick="loginAdmin()">Login</button>
+        </div>
+
+        <div id="userLogin" class="hidden">
+            <h2>User Login</h2>
+            <input type="text" id="userUsername" placeholder="Username" class="form-control mt-2">
+            <input type="password" id="userPassword" placeholder="Password" class="form-control mt-2">
+            <button class="btn btn-success mt-3" onclick="loginUser()">Login</button>
+        </div>
+
+        <div id="userView" class="hidden">
+            <button class="btn btn-danger float-end" onclick="logout()">Logout</button>
+            <h2>People Inside: <span id="userPeopleCount">0</span></h2>
+            <p>Treadmill: <span id="userTreadmill">Available</span></p>
+            <p>Dumbbells: <span id="userDumbbells">Available</span></p>
+            <p>Bench Press: <span id="userBenchPress">Available</span></p>
+        </div>
+
+        <div id="gymPanel" class="hidden">
+            <button class="btn btn-danger float-end" onclick="logout()">Logout</button>
+            <h2>People Inside: <span id="peopleCount">0</span></h2>
+            <button class="btn btn-danger" onclick="updateCount(-1)">-</button>
+            <button class="btn btn-success" onclick="updateCount(1)">+</button>
+            <h3>Equipment</h3>
+            <p>Treadmill: <span id="treadmill">Available</span></p>
+            <button onclick="toggleEquipment('treadmill')">Toggle</button>
+        </div>
+    </div>
+
+    <script>
+        function showSection(section) {
+            document.getElementById("roleSelection").classList.add("hidden");
+            document.getElementById(section).classList.remove("hidden");
+        }
+
+        function loginAdmin() {
+            document.getElementById("adminLogin").classList.add("hidden");
+            document.getElementById("gymPanel").classList.remove("hidden");
+        }
+
+        function loginUser() {
+            document.getElementById("userLogin").classList.add("hidden");
+            document.getElementById("userView").classList.remove("hidden");
+        }
+
+        function logout() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
